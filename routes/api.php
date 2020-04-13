@@ -4,9 +4,11 @@ use App\Comment;
 use App\Discussion;
 
 use App\Http\Resources\CommentResource;
+use App\Http\Resources\InfoResource;
 use App\Resource;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,18 +22,15 @@ use Illuminate\Http\Request;
 */
 
 Route::post('password/email', "ForgotPasswordController@sendResetLinkResponse");
-
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
 
 Route::middleware('auth:api')->get('/discussion', 'DiscussionController@index');
 Route::middleware('auth:api')->post('/discussion/create', 'DiscussionController@store');
 Route::middleware('auth:api')->delete('/discussion/{id}', function($id){
     Discussion::findOrFail($id)->delete();
 });
-
 
 Route::middleware('auth:api')->get('/comment', 'CommentController@index');
 Route::middleware('auth:api')->post('/comment/create', 'CommentController@store');
@@ -42,7 +41,6 @@ Route::middleware('auth:api')->get('/discussion/{id}/comment', function($id){
 Route::middleware('auth:api')->delete('/comment/id', function($id){
     Comment::findOrFail($id)->delete();
 });
-
 
 Route::middleware('auth:api')->get('/user/{id}', function($id){
     return User::findOrFail($id);
@@ -58,13 +56,8 @@ Route::group(['namespace' => 'API'], function () {
     Route::post('/register', 'UserController@store');
 });
 
-
 Route::middleware('auth:api')->get('/resource', 'ResourceController@index');
 Route::middleware('auth:api')->post('/resource/create', 'ResourceController@store');
 Route::middleware('auth:api')->delete('/resource/{id}', function($id){
     Resource::findOrFail($id)->delete();
 });
-
-
-
-
